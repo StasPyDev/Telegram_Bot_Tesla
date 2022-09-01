@@ -1,7 +1,6 @@
 from aiogram import Bot, types, executor, Dispatcher
 import config
 import asyncio
-from datetime import datetime
 import time
 
 from parser import parse
