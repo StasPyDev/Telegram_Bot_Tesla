@@ -31,37 +31,32 @@ def parse_first_post(headers):
     return data
 
 
-def parse_all_pages(url, headers, posts, page_post):
-    data = []
-    soup = return_soup(url=url, headers=headers)
-
-    block_contents = soup.find_all('div', class_='five columns alpha')
-    for content in block_contents:
-        title = content.find('a').get('title')
-        link_post = 'https://www.tesmanian.com' + content.find('a').get('href')
-        if title not in posts:
-            data.append({
-                'Title': title,
-                'URL': link_post
-            })
-            return data, page_post
-        else:
-            page_post += 1
-            get_post_information(page_post=page_post)
-
-
-#
+# Collects information from other posts
 def get_post_information(paginate, headers, posts, page_post):
     for page in range(page_post, int(paginate)):
+        data = []
         url = f'https://www.tesmanian.com/blogs/tesmanian-blog?page={page + 1}'
+
+        soup = return_soup(url=url, headers=headers)
 
         if parse_first_post(headers=headers)[0]['Title'] not in posts:
             return parse_first_post(headers=headers), page_post
         else:
-            return parse_all_pages(url=url, headers=headers, posts=posts, page_post=page_post)
+            block_contents = soup.find_all('div', class_='five columns alpha')
+            for content in block_contents:
+                title = content.find('a').get('title')
+                link_post = 'https://www.tesmanian.com' + content.find('a').get('href')
+                if title not in posts:
+                    data.append({
+                        'Title': title,
+                        'URL': link_post
+                    })
+                    return data, page_post
+                else:
+                    continue
+            page_post += 1
 
 
-#
 def parse(posts, page_post):
     headers = {
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
@@ -72,4 +67,3 @@ def parse(posts, page_post):
 
     data, page_post = get_post_information(paginate=paginate, headers=headers, posts=posts, page_post=page_post)
     return data, page_post
-
