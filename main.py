@@ -1,6 +1,8 @@
 from aiogram import Bot, types, executor, Dispatcher
 import config
 import asyncio
+from datetime import datetime
+import time
 
 from parser import parse
 
@@ -16,9 +18,11 @@ page_post = 0
 async def post_content(message: types.Message):
     global page_post
     while True:
+        start = time.time()
         data, pages_parse = parse(posts=posts, page_post=page_post)
         data = data[0]
-        await asyncio.sleep(15)
+        elapse = time.time() - start
+        await asyncio.sleep(15 - elapse)
 
         if data['Title'] not in posts:
             chat_id = message.chat.id
