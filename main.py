@@ -18,7 +18,7 @@ async def post_content(message: types.Message):
     while True:
         data, pages_parse = parse(posts=posts, page_post=page_post)
         data = data[0]
-        # await asyncio.sleep(15)
+        await asyncio.sleep(15)
 
         if data['Title'] not in posts:
             chat_id = message.chat.id
