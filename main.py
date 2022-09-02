@@ -3,8 +3,6 @@ import config
 import asyncio
 import time
 
-from aiogram.dispatcher.filters import Command
-
 from parser import parse
 
 
