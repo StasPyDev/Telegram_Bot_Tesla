@@ -3,6 +3,8 @@ import config
 import asyncio
 import time
 
+from aiogram.dispatcher.filters import Command
+
 from parser import parse
 
 
@@ -13,7 +15,7 @@ posts = []
 page_post = 0
 
 
-@dp.message_handler()
+@dp.message_handler(text='/start')
 async def post_content(message: types.Message):
     global page_post
     while True:
